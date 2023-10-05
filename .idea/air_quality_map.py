@@ -45,14 +45,16 @@ def fetch_current_location():
         address_entry.delete(0, tk.END)
         address_entry.insert(0, f"{city}, {region}, {country}")
         fetch_air_quality_iqair()
-    except:
-        messagebox.showerror("Error", "Failed to fetch your current location. Please check your internet connection and try again.")
+    except geocoder.GeocoderTimedOut:
+        messagebox.showerror("Error", "Geocoder timed out. Please check your internet connection and try again.")
+    except Exception as e:
+        messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
 def fetch_air_quality_iqair():
     address = address_entry.get()
-    api_url = f"https://api.iqair.com/v1/cities/{address}"
-    api_key = "c58f03e3-9d50-47b7-9306-08808afda89c"
-    response = requests.get(api_url, headers={"Authorization": f"Bearer {api_key}"}, verify=False)
+    api_url = f"https://api.iqair.com/v1/forecast/{address}"
+    api_key = "c58f03e3-9d50-47b7-9306-08808afda89c"  # Replace with your IQAir API key
+    response = requests.get(api_url, headers={"Authorization": f"Bearer {api_key}"})
     if response.status_code == 200:
         response_data = response.json()
         air_quality_index = response_data["data"]["current"]["pollution"]["aqius"]
@@ -84,32 +86,32 @@ def fetch_air_quality_iqair():
 
 def display_help():
     help_message = """
-Air Quality Checker Help:
+    Air Quality Checker Help:
 
-1. Enter your address (City, State, Country) in the provided textbox.
-2. Press 'Check Air Quality' to fetch the air quality index for that address.
-3. Alternatively, press 'Use Current Location' to automatically detect your location and fetch the air quality.
-4. The program will display the Air Quality Index (AQI) and a Face Mask Rating (on a 1-10 scale).
-    - Rating 1: Air quality is good. No need for a mask.
-    - Rating 10: Air quality is hazardous. It's highly recommended to wear a mask.
-5. Press 'Open Air Quality Map' to view the map with your location and AQI information.
-6. For recommendations on precautions, press 'Recommendations'.
+    1. Enter your address (City, State, Country) in the provided textbox.
+    2. Press 'Check Air Quality' to fetch the air quality index for that address.
+    3. Alternatively, press 'Use Current Location' to automatically detect your location and fetch the air quality.
+    4. The program will display the Air Quality Index (AQI) and a Face Mask Rating (on a 1-10 scale).
+        - Rating 1: Air quality is good. No need for a mask.
+        - Rating 10: Air quality is hazardous. It's highly recommended to wear a mask.
+    5. Press 'Open Air Quality Map' to view the map with your location and AQI information.
+    6. For recommendations on precautions, press 'Recommendations'.
 
-Remember, the air quality data is fetched from IQAir and may vary in real-time.
+    Remember, the air quality data is fetched from IQAir and may vary in real-time.
     """
     messagebox.showinfo("Help", help_message)
 
 def display_about():
     about_message = """
-Air Quality Checker:
+    Air Quality Checker:
 
-This application fetches real-time air quality data from IQAir, a leading global air quality monitoring and data platform.
+    This application fetches real-time air quality data from IQAir, a leading global air quality monitoring and data platform.
 
-The Face Mask Rating provided is a simple guide based on the Air Quality Index (AQI) to help users determine the necessity of wearing a mask. A rating closer to 10 indicates a higher recommendation to wear a mask.
+    The Face Mask Rating provided is a simple guide based on the Air Quality Index (AQI) to help users determine the necessity of wearing a mask. A rating closer to 10 indicates a higher recommendation to wear a mask.
 
-All data and recommendations are for informational purposes only. Always refer to local guidelines and health recommendations.
+    All data and recommendations are for informational purposes only. Always refer to local guidelines and health recommendations.
 
-All Rights Reserved. © 2023 Alphonce Ochieng
+    All Rights Reserved. © 2023 Alphonce Ochieng
     """
     messagebox.showinfo("About", about_message)
 
