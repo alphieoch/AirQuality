@@ -1,0 +1,38 @@
+
+<!-- Air Quality App Main HTML Structure -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Air Quality App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgit9L_6U-geDv2BGzQO7qkBvOa4p6llM&callback=initMap" async defer></script>
+</head>
+<body>
+    <header>
+        <span id="api-provider">Provided by AirVisual API</span>
+        <h1>Air Quality App</h1>
+        <h1>By Alphonce Ochieng</h1>
+    </header>
+    <main>
+        <div id="search-container">
+            <input type="text" id="location-search" placeholder="Search for a location">
+        </div>
+        
+        <div id="map"></div>
+        
+        <section id="aqi-data">
+            <h2>Air Quality Index: <span id="aqi-value">--</span></h2>
+            <h2>Main Pollutant: <span id="main-pollutant">--</span></h2>
+        </section>
+        
+        <section id="mask-recommendation">
+            <h2>Mask Recommendation: <span id="mask-rec">--</span></h2>
+        </section>
+    </main>
+    <script src="script.js"></script>
+</body>
+</html>
+
